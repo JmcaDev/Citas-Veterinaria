@@ -1,8 +1,7 @@
-
-
+import PropTypes from "prop-types";
 import Paciente from "./Paciente"
 
-function ListadoPacientes({pacientes, setPaciente}) {
+function ListadoPacientes({pacientes, setPaciente, eliminarPaciente}) {
 
   return (
     <div className="md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll">
@@ -20,6 +19,7 @@ function ListadoPacientes({pacientes, setPaciente}) {
                 key={paciente.id}
                 paciente ={paciente}
                 setPaciente = {setPaciente}
+                eliminarPaciente = {eliminarPaciente}
               />
         ))}
           </>
@@ -27,8 +27,8 @@ function ListadoPacientes({pacientes, setPaciente}) {
           <>
             <h2 className="font-black text-3xl text-center">No hay pacientes</h2>
             <p className="text-xl mt-5 mb-10 text-center">
-              Comienza agregando pacientes {""}
-              <span className="text-indigo-600 font-bold">y apareceran en este lugar</span>
+              Comienza agregando pacientes y {""}
+              <span className="text-indigo-600 font-bold">apareceran en este lugar</span>
             </p>
           </>
         )}
@@ -42,6 +42,12 @@ function ListadoPacientes({pacientes, setPaciente}) {
     </div>
     
   )
+}
+
+ListadoPacientes.propTypes = {
+  pacientes : PropTypes.array,
+  setPaciente : PropTypes.func,
+  eliminarPaciente: PropTypes.func
 }
 
 export default ListadoPacientes

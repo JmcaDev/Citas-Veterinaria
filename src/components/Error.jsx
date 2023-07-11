@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 
 function Error({children}) {
   return (
@@ -6,6 +6,10 @@ function Error({children}) {
         {children}
     </div>
   )
+}
+
+Error.propTypes = {
+  children: PropTypes.object
 }
 
 export default Error

@@ -1,9 +1,10 @@
 // Usar snippet rfce
 
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import Error from "./Error";
 
-function Formulario({pacientes,setPacientes, paciente}) {
+function Formulario({pacientes,setPacientes, paciente, setPaciente}) {
 
   const generarId = () =>{
     const random = Math.random().toString(36).substr(2)
@@ -21,7 +22,13 @@ function Formulario({pacientes,setPacientes, paciente}) {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    
+    if(Object.keys(paciente).length > 0){
+      setNombre(paciente.nombre)
+      setPropietario(paciente.propietario)
+      setEmail(paciente.email)
+      setFecha(paciente.fecha)
+      setSintomas(paciente.sintomas)
+    }
   }, [paciente])
 
   
@@ -44,12 +51,22 @@ function Formulario({pacientes,setPacientes, paciente}) {
       email, 
       fecha, 
       sintomas,
-      id: generarId()
     }
 
-    // console.log(objetoPaciente)
+    if(paciente.id){
+      //Editando un registro
+      objetoPaciente.id = paciente.id
 
-    setPacientes([...pacientes, objetoPaciente])
+      const pacientesActualizados = pacientes.map( (pacienteState) => pacienteState.id === paciente.id ? objetoPaciente : pacienteState)
+
+      setPacientes(pacientesActualizados)
+      setPaciente({})
+
+    }else{
+      //Nuevo registro
+      objetoPaciente.id = generarId()
+      setPacientes([...pacientes, objetoPaciente])
+    }
 
     //Limpiando form
     setNombre("")
@@ -135,11 +152,18 @@ function Formulario({pacientes,setPacientes, paciente}) {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:cursor-pointer rounded hover:bg-indigo-800 transition-colors"
-          value="Agregar paciente"
+          value={paciente.id ? "Editar paciente" : "Agregar paciente"}
         />
       </form>
     </div>
   )
+}
+
+Formulario.propTypes = {
+  paciente : PropTypes.object,
+  pacientes : PropTypes.array,
+  setPacientes: PropTypes.func,
+  setPaciente: PropTypes.func
 }
 
 export default Formulario
